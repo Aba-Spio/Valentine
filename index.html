@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Will you be my Valentine?</title>
+
   <style>
     body{
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -12,8 +13,8 @@
       display: grid;
       place-items: center;
       background: linear-gradient(135deg, #ffe6f0, #fff);
-      overflow: hidden;
     }
+
     .card{
       background: white;
       padding: 28px 22px;
@@ -22,6 +23,7 @@
       width: min(480px, 92vw);
       text-align: center;
     }
+
     .photo{
       width: 140px;
       height: 140px;
@@ -32,30 +34,49 @@
       display: block;
       background: #f2f2f2;
     }
-    h1{ margin: 0 0 10px; font-size: 26px; }
-    p{ margin: 0 0 18px; color: #444; }
+
+    h1{
+      margin: 0 0 10px;
+      font-size: 26px;
+    }
+
+    p{
+      margin: 0 0 18px;
+      color: #444;
+    }
+
     .btns{
-  position: relative;
-  margin: 14px auto 0;
-  height: 60px;
-  width: 320px;
-}
+      position: relative;
+      width: 320px;
+      height: 60px;
+      margin: 14px auto 0;
+    }
 
-#yes{
-  background: #ff3b7a;
-  color: white;
-  position: absolute;
-  left: 0;
-  top: 0;
-}
+    button{
+      border: 0;
+      padding: 14px 18px;
+      border-radius: 14px;
+      font-size: 16px;
+      cursor: pointer;
+      user-select: none;
+      position: absolute;
+      top: 0;
+    }
 
-#no{
-  background: #f2f2f2;
-  color: #222;
-  position: absolute;
-  right: 0;
-  top: 0;
-}
+    #yes{
+      left: 0;
+      background: #ff3b7a;
+      color: white;
+      z-index: 2;
+    }
+
+    #no{
+      right: 0;
+      background: #f2f2f2;
+      color: #222;
+      z-index: 1;
+    }
+
     .small{
       font-size: 13px;
       color: #666;
@@ -66,7 +87,7 @@
 
 <body>
   <div class="card">
-    <img class="photo" src="us.jpg" alt="Us" />
+    <img class="photo" src="us.jpg" alt="Us">
 
     <h1>Mike, will you be my Valentine?</h1>
     <p id="hint">Be honest 😇</p>
@@ -79,36 +100,43 @@
     <div class="small">Made with love by Aba</div>
   </div>
 
-  function moveNoButton() {
-  const areaRect = btnArea.getBoundingClientRect();
-  const noRect = noBtn.getBoundingClientRect();
-  const yesRect = yesBtn.getBoundingClientRect();
+  <script>
+    const noBtn = document.getElementById("no");
+    const yesBtn = document.getElementById("yes");
+    const btnArea = document.getElementById("btnArea");
+    const hint = document.getElementById("hint");
 
-  const maxX = areaRect.width - noRect.width;
-  const maxY = areaRect.height - noRect.height;
+    function moveNoButton(){
+      const areaWidth = btnArea.offsetWidth;
+      const noWidth = noBtn.offsetWidth;
+      const yesWidth = yesBtn.offsetWidth;
 
-  const minX = Math.min(maxX, yesRect.width + 14);
+      const minX = yesWidth + 20;
+      const maxX = areaWidth - noWidth;
 
-  const x = minX + Math.random() * Math.max(0, maxX - minX);
-  const y = Math.random() * Math.max(0, maxY);
+      const x = minX + Math.random() * (maxX - minX);
 
-  noBtn.style.right = "auto";
-  noBtn.style.left = `${x}px`;
-  noBtn.style.top = `${y}px`;
+      noBtn.style.left = `${x}px`;
+      noBtn.style.right = "auto";
 
-  const messages = [
-    "Aww come on 😭",
-    "Try again 😌",
-    "No is not available today 😅",
-    "Why are you like this 😂",
-    "Please say yes 🥺",
-    "You know you love me 😇"
-  ];
-  hint.textContent = messages[Math.floor(Math.random() * messages.length)];
-}
+      const messages = [
+        "Aww come on 😭",
+        "Try again 😌",
+        "No is not available today 😅",
+        "Why are you like this 😂",
+        "Please say yes 🥺",
+        "You know you love me 😇"
+      ];
+
+      hint.textContent = messages[Math.floor(Math.random() * messages.length)];
+    }
+
     noBtn.addEventListener("mouseenter", moveNoButton);
-    noBtn.addEventListener("touchstart", (e) => { e.preventDefault(); moveNoButton(); });
     noBtn.addEventListener("click", moveNoButton);
+    noBtn.addEventListener("touchstart", e => {
+      e.preventDefault();
+      moveNoButton();
+    });
 
     yesBtn.addEventListener("click", () => {
       window.location.href = "yes.html";
